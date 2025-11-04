@@ -1,0 +1,30 @@
+{
+  "name": "Kulhad Chai Restaurant",
+  "short_name": "Kulhad Chai",
+  "description": "QR code ordering system for Kulhad Chai restaurant - Order delicious chai and snacks",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ea580c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "restaurant", "business"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}
+
