@@ -12,12 +12,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { Package, Plus, Search, Edit, AlertTriangle, TrendingDown, Filter, BarChart3 } from "lucide-react";
-import { getProducts, saveProduct, updateProduct, getLowStockProducts } from "@/lib/supabase-service";
+import { getProducts, saveProduct, updateProduct, getLowStockProducts } from "@/lib/supabase-service-cached";
+import { useMultipleCachedData } from "@/hooks/useCachedData";
 import { AdminSidebar } from "@/components/admin-sidebar";
 const CATEGORIES = ["Beverages", "Snacks", "Desserts", "Main Course", "Appetizers", "Other"];
 export default function ProductsPage() {
-  const [products, setProducts] = useState([]);
-  const [lowStockProducts, setLowStockProducts] = useState([]);
+  // Use cached data hook for better performance
+  const { data, loading, refetchAll } = useMultipleCachedData([
+    { cacheType: 'products', fetchFunction: getProducts },
+    { cacheType: 'lowStockProducts', fetchFunction: getLowStockProducts },
+  ]);
+
+  const products = data.products || [];
+  const lowStockProducts = data.lowStockProducts || [];
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -36,9 +43,7 @@ export default function ProductsPage() {
     sku: "",
     isActive: true
   });
-  useEffect(() => {
-    loadProducts();
-  }, []);
+  
   useEffect(() => {
     const filtered = products.filter(product => {
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || product.sku?.toLowerCase().includes(searchTerm.toLowerCase()) || product.category.toLowerCase().includes(searchTerm.toLowerCase());
@@ -48,16 +53,6 @@ export default function ProductsPage() {
     });
     setFilteredProducts(filtered);
   }, [products, searchTerm, selectedCategory, stockFilter]);
-  const loadProducts = async () => {
-    try {
-      const products = await getProducts();
-      setProducts(products);
-      const lowStock = await getLowStockProducts();
-      setLowStockProducts(lowStock);
-    } catch (error) {
-      console.error('Error loading products:', error);
-    }
-  };
   const handleSubmit = async e => {
     e.preventDefault();
     const productData = {
@@ -78,7 +73,7 @@ export default function ProductsPage() {
       } else {
         await saveProduct(productData);
       }
-      await loadProducts();
+      await refetchAll();
       resetForm();
     } catch (error) {
       console.error('Error saving product:', error);
@@ -121,7 +116,7 @@ export default function ProductsPage() {
       await updateProduct(product.id, {
         isActive: !product.isActive
       });
-      await loadProducts();
+      await refetchAll();
     } catch (error) {
       console.error('Error toggling product status:', error);
     }
@@ -134,7 +129,7 @@ export default function ProductsPage() {
         await updateProduct(productId, {
           stock: newStock
         });
-        await loadProducts();
+        await refetchAll();
       } catch (error) {
         console.error('Error adjusting stock:', error);
       }

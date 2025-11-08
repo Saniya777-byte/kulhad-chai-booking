@@ -4,6 +4,9 @@ import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { ToastProvider } from "@/components/toast";
 import { AuthProvider } from "@/contexts/auth-context";
+import { ServiceWorkerInit } from "@/components/service-worker-init";
+import { DataPrefetcher } from "@/components/data-prefetcher";
+import "@/lib/cache-debug"; // Enable cache debugging in development
 import "./globals.css";
 export const metadata = {
   title: "Kulhad Chai - Restaurant Management",
@@ -72,6 +75,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        <ServiceWorkerInit />
+        <DataPrefetcher />
         <AuthProvider>
           <ToastProvider>
             <Suspense fallback={null}>{children}</Suspense>

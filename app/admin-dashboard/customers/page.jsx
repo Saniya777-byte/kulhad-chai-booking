@@ -10,11 +10,18 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, Plus, Search, Edit, Trash2, FileText, Phone, Mail, MapPin } from "lucide-react";
-import { getCustomers, saveCustomer, updateCustomer, deleteCustomer, getInvoices } from "@/lib/supabase-service";
+import { getCustomers, saveCustomer, updateCustomer, deleteCustomer, getInvoices } from "@/lib/supabase-service-cached";
+import { useMultipleCachedData } from "@/hooks/useCachedData";
 import { AdminSidebar } from "@/components/admin-sidebar";
 export default function CustomersPage() {
-  const [customers, setCustomers] = useState([]);
-  const [invoices, setInvoices] = useState([]);
+  // Use cached data hook for better performance
+  const { data, loading, refetchAll } = useMultipleCachedData([
+    { cacheType: 'customers', fetchFunction: getCustomers },
+    { cacheType: 'invoices', fetchFunction: getInvoices },
+  ]);
+
+  const customers = data.customers || [];
+  const invoices = data.invoices || [];
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -25,30 +32,12 @@ export default function CustomersPage() {
     email: "",
     address: ""
   });
-  useEffect(() => {
-    loadCustomers();
-    loadInvoices();
-  }, []);
+  
   useEffect(() => {
     const filtered = customers.filter(customer => customer.name.toLowerCase().includes(searchTerm.toLowerCase()) || customer.phone.includes(searchTerm) || customer.email?.toLowerCase().includes(searchTerm.toLowerCase()));
     setFilteredCustomers(filtered);
   }, [customers, searchTerm]);
-  const loadCustomers = async () => {
-    try {
-      const customersData = await getCustomers();
-      setCustomers(customersData);
-    } catch (error) {
-      console.error('Error loading customers:', error);
-    }
-  };
-  const loadInvoices = async () => {
-    try {
-      const invoicesData = await getInvoices();
-      setInvoices(invoicesData);
-    } catch (error) {
-      console.error('Error loading invoices:', error);
-    }
-  };
+
   const handleSubmit = async e => {
     e.preventDefault();
     try {
@@ -57,7 +46,7 @@ export default function CustomersPage() {
       } else {
         await saveCustomer(formData);
       }
-      await loadCustomers();
+      await refetchAll();
       resetForm();
     } catch (error) {
       console.error('Error saving customer:', error);
@@ -87,7 +76,7 @@ export default function CustomersPage() {
     if (confirm("Are you sure you want to delete this customer?")) {
       try {
         await deleteCustomer(id);
-        await loadCustomers();
+        await refetchAll();
       } catch (error) {
         console.error('Error deleting customer:', error);
       }

@@ -10,8 +10,9 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Settings, Store, Users, Clock, Wifi, Bell, Save, Check, AlertCircle } from 'lucide-react';
+import { Settings, Store, Users, Clock, Wifi, Bell, Save, Check, AlertCircle, Database } from 'lucide-react';
 import { menuItemsService, tablesService } from '@/lib/database';
+import { CacheManagerUI } from '@/components/cache-manager-ui';
 const defaultRestaurantSettings = {
   name: 'Kulhad Chai Restaurant',
   address: '123 Main Street, City, State 12345',
@@ -198,6 +199,10 @@ export default function SettingsPage() {
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Overview
+            </TabsTrigger>
+            <TabsTrigger value="cache" className="flex items-center gap-2">
+              <Database className="h-4 w-4" />
+              Cache
             </TabsTrigger>
           </TabsList>
 
@@ -434,6 +439,11 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* Cache Management */}
+          <TabsContent value="cache" className="space-y-6">
+            <CacheManagerUI />
           </TabsContent>
         </Tabs>
       </div>

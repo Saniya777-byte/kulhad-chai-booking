@@ -8,28 +8,25 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 import { TrendingUp, DollarSign, ShoppingCart, Users, Download, Calendar, Package } from "lucide-react";
-import { getInvoices, getProducts, getCustomers, getPayments } from "@/lib/supabase-service";
+import { getInvoices, getProducts, getCustomers, getPayments } from "@/lib/supabase-service-cached";
+import { useMultipleCachedData } from "@/hooks/useCachedData";
+
 export default function ReportsPage() {
-  const [invoices, setInvoices] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [customers, setCustomers] = useState([]);
-  const [payments, setPayments] = useState([]);
   const [dateRange, setDateRange] = useState("30"); // days
   const [reportType, setReportType] = useState("overview");
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [invoicesData, productsData, customersData, paymentsData] = await Promise.all([getInvoices(), getProducts(), getCustomers(), getPayments()]);
-        setInvoices(invoicesData);
-        setProducts(productsData);
-        setCustomers(customersData);
-        setPayments(paymentsData);
-      } catch (error) {
-        console.error('Error loading data:', error);
-      }
-    };
-    loadData();
-  }, []);
+  
+  // Use cached data hook for better performance
+  const { data, loading } = useMultipleCachedData([
+    { cacheType: 'invoices', fetchFunction: getInvoices },
+    { cacheType: 'products', fetchFunction: getProducts },
+    { cacheType: 'customers', fetchFunction: getCustomers },
+    { cacheType: 'payments', fetchFunction: getPayments },
+  ]);
+
+  const invoices = data.invoices || [];
+  const products = data.products || [];
+  const customers = data.customers || [];
+  const payments = data.payments || [];
 
   // Filter data based on date range
   const filterByDateRange = (items, dateField = "createdAt") => {

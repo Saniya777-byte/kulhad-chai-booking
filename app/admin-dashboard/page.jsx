@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, Package, FileText, CreditCard, TrendingUp, AlertTriangle, DollarSign, Calendar, BarChart3 } from "lucide-react";
-import { getCustomers, getProducts, getInvoices, getLowStockProducts } from "@/lib/supabase-service";
+import { getCustomers, getProducts, getInvoices, getLowStockProducts } from "@/lib/supabase-service-cached";
+import { useMultipleCachedData } from "@/hooks/useCachedData";
 import { AdminSidebar } from "@/components/admin-sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { OrderNotification } from "@/components/order-notification";
@@ -45,24 +46,18 @@ const YAxis = lazy(() => import("recharts").then(module => ({
   default: module.YAxis
 })));
 export default function AdminDashboard() {
-  const [customers, setCustomers] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [invoices, setInvoices] = useState([]);
-  const [lowStockProducts, setLowStockProducts] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [customersData, productsData, invoicesData, lowStockData] = await Promise.all([getCustomers(), getProducts(), getInvoices(), getLowStockProducts()]);
-        setCustomers(customersData);
-        setProducts(productsData);
-        setInvoices(invoicesData);
-        setLowStockProducts(lowStockData);
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-      }
-    };
-    fetchData();
-  }, []);
+  // Use cached data hook for better performance
+  const { data, loading, refetchAll } = useMultipleCachedData([
+    { cacheType: 'customers', fetchFunction: getCustomers },
+    { cacheType: 'products', fetchFunction: getProducts },
+    { cacheType: 'invoices', fetchFunction: getInvoices },
+    { cacheType: 'lowStockProducts', fetchFunction: getLowStockProducts },
+  ]);
+
+  const customers = data.customers || [];
+  const products = data.products || [];
+  const invoices = data.invoices || [];
+  const lowStockProducts = data.lowStockProducts || [];
   const totalRevenue = invoices.filter(inv => inv.paymentStatus === "paid").reduce((sum, inv) => sum + inv.totalAmount, 0);
   const pendingAmount = invoices.filter(inv => inv.paymentStatus !== "paid").reduce((sum, inv) => sum + inv.balanceDue, 0);
   const thisMonthInvoices = invoices.filter(inv => {
