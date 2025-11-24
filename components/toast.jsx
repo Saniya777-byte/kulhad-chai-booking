@@ -37,9 +37,9 @@ export function ToastProvider({
     addToast,
     removeToast
   }}>
-      {children}
-      <ToastContainer />
-    </ToastContext.Provider>;
+    {children}
+    <ToastContainer />
+  </ToastContext.Provider>;
 }
 function ToastContainer() {
   const {
@@ -47,8 +47,8 @@ function ToastContainer() {
     removeToast
   } = useToast();
   return <div className="fixed top-4 right-4 z-50 space-y-2">
-      {toasts.map(toast => <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />)}
-    </div>;
+    {toasts.map(toast => <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />)}
+  </div>;
 }
 function ToastItem({
   toast,
@@ -74,57 +74,13 @@ function ToastItem({
   };
   const Icon = icons[toast.type];
   return <div className={cn("flex items-start space-x-3 p-4 rounded-lg border shadow-lg backdrop-blur-sm animate-slide-up max-w-sm", colors[toast.type])}>
-      <Icon className={cn("w-5 h-5 mt-0.5 flex-shrink-0", iconColors[toast.type])} />
-      <div className="flex-1 min-w-0">
-        <p className="font-medium text-sm">{toast.title}</p>
-        {toast.description && <p className="text-sm opacity-90 mt-1">{toast.description}</p>}
-      </div>
-      <button onClick={() => onRemove(toast.id)} className="flex-shrink-0 p-1 rounded-full hover:bg-black/10 transition-colors">
-        <X className="w-4 h-4" />
-      </button>
-    </div>;
+    <Icon className={cn("w-5 h-5 mt-0.5 flex-shrink-0", iconColors[toast.type])} />
+    <div className="flex-1 min-w-0">
+      <p className="font-medium text-sm">{toast.title}</p>
+      {toast.description && <p className="text-sm opacity-90 mt-1">{toast.description}</p>}
+    </div>
+    <button onClick={() => onRemove(toast.id)} className="flex-shrink-0 p-1 rounded-full hover:bg-black/10 transition-colors">
+      <X className="w-4 h-4" />
+    </button>
+  </div>;
 }
-
-// Helper functions for common toast types
-export const toast = {
-  success: (title, description) => {
-    const context = useContext(ToastContext);
-    if (context) {
-      context.addToast({
-        type: "success",
-        title,
-        description
-      });
-    }
-  },
-  error: (title, description) => {
-    const context = useContext(ToastContext);
-    if (context) {
-      context.addToast({
-        type: "error",
-        title,
-        description
-      });
-    }
-  },
-  info: (title, description) => {
-    const context = useContext(ToastContext);
-    if (context) {
-      context.addToast({
-        type: "info",
-        title,
-        description
-      });
-    }
-  },
-  warning: (title, description) => {
-    const context = useContext(ToastContext);
-    if (context) {
-      context.addToast({
-        type: "warning",
-        title,
-        description
-      });
-    }
-  }
-};
