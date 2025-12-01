@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/YOUR_ORG/kulhad-chai-booking/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 📚 Documentation
+    url: https://github.com/YOUR_ORG/kulhad-chai-booking/tree/main/docs
+    about: Read the documentation for setup guides and troubleshooting
+  - name: 🔒 Security Issue
+    url: https://github.com/YOUR_ORG/kulhad-chai-booking/security/advisories/new
+    about: Report a security vulnerability privately

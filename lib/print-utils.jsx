@@ -15,18 +15,14 @@ export const printBill = async (invoice, options = {}) => {
     throw new Error("Unable to open print window. Please check popup settings.");
   }
 
-  // Generate the HTML content
   const htmlContent = generateBillHTML(invoice, template);
 
-  // Write content to the new window
   printWindow.document.write(htmlContent);
   printWindow.document.close();
 
-  // Wait for content to load, then print
   printWindow.onload = () => {
     if (autoPrint) {
       printWindow.print();
-      // Close window after printing (with delay to ensure print dialog appears)
       setTimeout(() => {
         printWindow.close();
       }, 1000);
@@ -53,7 +49,6 @@ export const generateBillHTML = (invoice, template) => {
         return "148mm";
       default:
         return "80mm";
-      // thermal
     }
   };
   const getPageSize = () => {
@@ -64,7 +59,6 @@ export const generateBillHTML = (invoice, template) => {
         return "A5";
       default:
         return `${getPaperWidth()} auto`;
-      // thermal - auto height
     }
   };
   return `

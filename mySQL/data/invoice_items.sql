@@ -1,0 +1,15 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Data for table invoice_items
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('214a7571-5ac5-4a58-94e0-6eb2562884a8', '865a4ce0-c893-4858-b1dd-edd90fa89f99', '2cfa036a-666a-4141-b8f5-facbfd7b272b', 'Masala Chai', 1, 30, 0, 5, 1.5, 31.5);
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('d4d62aa7-5977-47f9-b97a-f9a0392c16d8', '865a4ce0-c893-4858-b1dd-edd90fa89f99', '4a879d02-d137-43b2-b8b1-fae7099569d5', 'Grilled Sandwich', 1, 90, 0, 5, 4.5, 94.5);
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('92704a46-7535-410f-bb99-7625f996b33e', '5dbaa8bb-4602-46d2-9036-a28614baf19e', '2cfa036a-666a-4141-b8f5-facbfd7b272b', 'Masala Chai', 3, 30, 0, 5, 4.5, 94.5);
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('d8b24c4a-0c3d-42d6-badd-b3d637255bc0', '5dbaa8bb-4602-46d2-9036-a28614baf19e', 'cff8b3df-a680-4c2e-942d-de08cbe50d5e', 'Cold Coffee', 3, 60, 0, 5, 9, 189);
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('db67dd88-8d66-4046-8ed0-26c5cecf62d2', '5dbaa8bb-4602-46d2-9036-a28614baf19e', 'bb2144ee-cef0-4591-a6db-b5c15ee5746f', 'French Fries', 3, 80, 0, 5, 12, 252);
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('a4d94bb6-9709-4da9-bd97-6850706ef396', '5dbaa8bb-4602-46d2-9036-a28614baf19e', 'f61bfec3-cd88-4f2f-a3c4-ca5e642556a9', 'Kulhad Chai', 3, 25, 0, 5, 3.75, 78.75);
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('2339449b-80ec-4839-a119-485a4c19d82d', '7606895a-4e78-4a30-810e-ff8ab1355616', 'bb2144ee-cef0-4591-a6db-b5c15ee5746f', 'French Fries', 2, 80, 0, 5, 8, 168);
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('3ae9dd31-4fe4-406d-b79f-42589760fb85', '7606895a-4e78-4a30-810e-ff8ab1355616', '5777dfaf-6a7b-40aa-8f43-f74e0df7de7f', 'Cheese Maggie', 2, 100, 0, 5, 10, 210);
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product_id`, `product_name`, `quantity`, `unit_price`, `discount`, `tax_rate`, `tax_amount`, `total_amount`) VALUES ('10872491-6ca4-4810-bdb7-5f3a5c0dd3bb', '7606895a-4e78-4a30-810e-ff8ab1355616', 'b226cec0-9850-478e-a8c8-09b9a032a9b9', 'Veg Burger', 2, 120, 0, 5, 12, 252);
+
+
+SET FOREIGN_KEY_CHECKS = 1;
