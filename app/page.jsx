@@ -254,17 +254,6 @@ export default function MenuPage() {
           />
         </div>
 
-        <div className="mb-6 sm:mb-8">
-          {isLoading ? <CategoryTabSkeleton /> : <div className="flex space-x-2 sm:space-x-3 overflow-x-auto pb-3 custom-scrollbar scrollbar-hide snap-x snap-mandatory md:justify-center md:flex-wrap md:overflow-visible" role="tablist" aria-label="Menu categories">
-            <button onClick={() => setSelectedCategory("all")} className={`flex items-center space-x-2 px-5 py-3 min-h-[48px] rounded-2xl whitespace-nowrap transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95 snap-start ${selectedCategory === "all" ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-orange-200" : "bg-white/90 backdrop-blur-md text-gray-700 hover:bg-white/95 border border-orange-100/50"}`} role="tab" aria-selected={selectedCategory === "all"} aria-controls="menu-items" type="button">
-              <span className="font-semibold text-sm sm:text-base">All Items</span>
-            </button>
-            {categories.map(category => <button key={category.id} onClick={() => setSelectedCategory(category.id)} className={`flex items-center space-x-2 px-5 py-3 min-h-[48px] rounded-2xl whitespace-nowrap transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95 snap-start ${selectedCategory === category.id ? `bg-gradient-to-r ${category.color} text-white shadow-lg` : "bg-white/90 backdrop-blur-md text-gray-700 hover:bg-white/95 border border-orange-100/50"}`} role="tab" aria-selected={selectedCategory === category.id} aria-controls="menu-items" type="button">
-              <span className="font-semibold text-sm sm:text-base">{category.name}</span>
-            </button>)}
-          </div>}
-        </div>
-
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6" id="menu-items" role="tabpanel" aria-label="Menu items">
           {isLoading ? Array.from({
             length: 6
